@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO-DO LIST</title>
+    <style>
+        .container{
+            width:100%;
+            height:100vh;
+            background:linear-gradient(blue,purple,navy);
+            padding:50px;
+        }
+        .task{
+            width:100%;
+            max-width: 400px;
+            background-color: white;
+            margin: 200px 400px;
+            height:200px;
+            resize: both;
+            overflow: auto;
+        }
+        .task h1{
+            font-size: 25px;
+            margin-left: 15px;
+        }
+        .to-do{
+            display: flex;
+            justify-content: space-between;
+        }
+        #task-input {
+            border: none;
+            outline: none;
+            margin-left: 10px;
+        }
+        .button{
+            background-color: rgb(182, 72, 32);
+            border-radius: 9px;
+            color: white;
+            padding: 10px;
+            border: none;
+            margin-right: 15px;
+
+        }
+        .button:active{
+            background-color: white;
+            color:black; 
+        }
+        li{
+            list-style: none;
+            font-size: 15px;
+            padding: 5px;
+            text-transform: capitalize;
+            position: relative;
+            margin-left: 20px;
+        }
+         ul li::before{
+            content: '';
+            width:18px;
+            height:18px;
+            position: absolute;
+            background-image: url("/unchecked.png");
+            background-position:center;
+            background-size: cover;
+            top:1x;
+            right:350px;
+         }
+         .task img{
+            width:28px;
+            height:28px;
+         }
+          ul li.checked{
+            color:#555;
+            text-decoration: line-through;
+         }
+         ul li.checked::before{
+            background-image: url("/checked.png");
+         }
+         ul li span{
+            position: absolute;
+            top: 0;
+            right:10px;
+            font-size: 25px;
+            width:30px;
+            height: 30px;
+            text-align: center;
+            color:#555;
+            border-radius: 50%;
+         }
+         ul li span:hover{
+            background-color: #edeef0;
+         }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="task">
+            <h1>TO DO LIST
+            <img src="/icon.png" alt="img"></h1>
+            <div class="to-do">
+                <input type="text" id="task-input" placeholder="write something here">
+                <button class="button">Add</button>
+            </div>
+           <ul class="task-list">
+            <!-- <li class="checked">task 1</li>
+            <li>task 2</li>
+            <li>task 3</li> -->
+           </ul>
+        </div>
+    </div>
+    <script>
+        let taskInput=document.querySelector("#task-input")
+        let taskList=document.querySelector(".task-list")
+        let btn=document.querySelector(".button")
+        btn.addEventListener("click",()=>{
+            if(taskInput.value===""){
+                alert("plz write something")
+            }else{
+            let li=document.createElement("li")
+            li.innerHTML=taskInput.value;
+            taskList.appendChild(li)
+            taskInput.value="";
+            let span=document.createElement("span")
+            span.innerHTML="\u00d7";
+            li.appendChild(span)
+            setData();
+            }
+    });
+    taskList.addEventListener("click",function(e){
+     if(e.target.tagName==="LI"){
+        e.target.classList.toggle("checked")
+        setData();
+     }else if(e.target.tagName==="SPAN"){
+        e.target.parentElement.remove();
+        setData(); 
+     }
+    },false)
+    function setData(){
+        localStorage.setItem("data",taskList.innerHTML)
+    }
+    function getData(){
+        taskList.innerHTML=localStorage.getItem("data")
+    }
+    getData();
+    </script>
+</body>
+</html>
